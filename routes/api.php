@@ -17,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/ticket/created-by/{user:email}', [\App\Http\Controllers\TicketController::class, 'createdBy']);
+Route::get('/ticket/assigned-to/{user:email}', [\App\Http\Controllers\TicketController::class, 'assignedTo']);
+Route::get('/ticket/by-department/{department:code}', [\App\Http\Controllers\TicketController::class, 'byDepartment']);
