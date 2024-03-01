@@ -23,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $audits_count
  * @property-read \App\Models\Department $department
  * @property-read \App\Models\User $owner
+ *
  * @method static \Database\Factories\TicketFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket newQuery()
@@ -38,6 +39,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Ticket withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Ticket extends BaseModel

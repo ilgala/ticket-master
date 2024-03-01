@@ -26,7 +26,7 @@ class TicketForm extends Component
 
         $ticket = $ticketService->creteFrom([
             'title' => $this->title,
-            'body' => $this->body
+            'body' => $this->body,
         ]);
 
         Log::info('Richiamato metodo create');

@@ -32,21 +32,24 @@ abstract class Repository
         return $this->query;
     }
 
-    protected function reset(): self {
+    protected function reset(): self
+    {
         $this->query = $this->model()->newQuery();
 
         return $this;
     }
 
-    public function __call(string $name,array $arguments){
-        if (!method_exists($this, $name)) {
+    public function __call(string $name, array $arguments)
+    {
+        if (! method_exists($this, $name)) {
             return $this->forwardCallTo($this->query(), $name, $arguments);
         }
 
         return $this->{$name}(...$arguments);
     }
 
-    public function save(Model $model, array $data) {
+    public function save(Model $model, array $data)
+    {
         return tap($model->fill($data), fn (Model $model) => $model->save());
     }
 }

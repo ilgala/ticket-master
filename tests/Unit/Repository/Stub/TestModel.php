@@ -6,5 +6,4 @@ use App\Models\BaseModel;
 
 class TestModel extends BaseModel
 {
-
 }

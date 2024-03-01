@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $tickets_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ *
  * @method static \Database\Factories\DepartmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Department newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Department newQuery()
@@ -35,6 +36,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Department whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Department withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Department withoutTrashed()
+ *
  * @mixin \Eloquent
  */
 class Department extends BaseModel

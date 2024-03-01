@@ -31,6 +31,7 @@ class DepartmentFactory extends Factory
             ];
         });
     }
+
     public function comm(): DepartmentFactory|Factory
     {
         return $this->state(function (array $attributes) {
@@ -39,6 +40,7 @@ class DepartmentFactory extends Factory
             ];
         });
     }
+
     public function tech(): DepartmentFactory|Factory
     {
         return $this->state(function (array $attributes) {

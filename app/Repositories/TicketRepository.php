@@ -10,7 +10,8 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
  */
 class TicketRepository extends Repository implements Contracts\TicketRepository
 {
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct(new Ticket());
     }
 
