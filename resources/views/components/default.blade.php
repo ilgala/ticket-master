@@ -39,7 +39,7 @@
         <!-- Contenuto principale -->
         <section class="flex-1 bg-white shadow-md p-4">
             <!-- Contenuto della pagina -->
-            @yield('content')
+            {{ $slot }}
         </section>
     </main>
 </div>

@@ -13,13 +13,11 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->uuid('owner_id');
-            $table->foreignUuid('')
+            $table->foreignUuid('owner_id')
                 ->references('id')
                 ->on('users')
                 ->cascadeOnDelete();
-            $table->uuid('department_id');
-            $table->foreignUuid('')
+            $table->foreignUuid('department_id')
                 ->references('id')
                 ->on('departments')
                 ->cascadeOnDelete();

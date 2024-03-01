@@ -17,7 +17,8 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'title' => fake()->sentence(5),
+            'body' => fake()->text(500),
         ];
     }
 }

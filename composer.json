@@ -10,12 +10,14 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
+        "livewire/livewire": "^3.4",
         "owen-it/laravel-auditing": "^13.6"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.15",
         "brianium/paratest": "^7.4",
         "fakerphp/faker": "^1.9.1",
+        "larastan/larastan": "^2.0",
         "laravel/pint": "^1.14",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",

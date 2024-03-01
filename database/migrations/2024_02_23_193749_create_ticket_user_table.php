@@ -12,13 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ticket_user', function (Blueprint $table) {
-            $table->uuid('ticket_id');
             $table->foreignUuid('ticket_id')
                 ->references('id')
                 ->on('tickets')
                 ->cascadeOnDelete();
 
-            $table->uuid('user_id');
             $table->foreignUuid('user_id')
                 ->references('id')
                 ->on('users')

@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Models\Ticket;
+use App\Repositories\Contracts\TicketRepository;
+
 class TicketService implements Contracts\TicketService
 {
     public function __construct(
@@ -9,8 +12,13 @@ class TicketService implements Contracts\TicketService
     ) {
     }
 
-    public function list()
+    public function fetch()
     {
-        return $this->ticketRepository->where('...')->orderBy('created_at', 'DESC')->get();
+        return $this->ticketRepository->list();
+    }
+
+    public function creteFrom(array $data): Ticket
+    {
+        return $this->ticketRepository->save(new Ticket(), $data);
     }
 }

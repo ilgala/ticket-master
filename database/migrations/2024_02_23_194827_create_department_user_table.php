@@ -12,8 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('department_user', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->foreignUuid('department_id')
+                ->references('id')
+                ->on('departments')
+                ->cascadeOnDelete();
+            $table->foreignUuid('user_id')
+                ->references('id')
+                ->on('users')
+                ->cascadeOnDelete();
         });
     }
 
