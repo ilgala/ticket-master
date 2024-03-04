@@ -13,10 +13,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('components.default');
-});
-
-Route::get('/form', function () {
-    return view('form');
-});
+Route::get('/', \App\Livewire\TicketForm::class);

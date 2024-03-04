@@ -32,6 +32,7 @@ abstract class Repository
         return $this->query;
     }
 
+    /** @codeCoverageIgnore */
     protected function reset(): self
     {
         $this->query = $this->model()->newQuery();
@@ -48,7 +49,7 @@ abstract class Repository
         return $this->{$name}(...$arguments);
     }
 
-    public function save(Model $model, array $data)
+    protected function save(Model $model, array $data)
     {
         return tap($model->fill($data), fn (Model $model) => $model->save());
     }

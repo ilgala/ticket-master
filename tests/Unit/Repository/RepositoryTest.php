@@ -21,4 +21,17 @@ class RepositoryTest extends TestCase
         $query = $repository->reset();
         $this->assertNotEquals($originalBuilder, $query);
     }
+
+    public function testItCreatesANewModel()
+    {
+        $repository = new TestRepository(
+            new TestModel()
+        );
+
+        $mock = $this->mock(TestModel::class);
+
+        $result = $repository->saveModel($mock);
+
+        $this->assertEquals($mock, $result);
+    }
 }

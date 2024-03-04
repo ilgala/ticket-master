@@ -49,7 +49,7 @@ class Ticket extends BaseModel
         'body',
     ];
 
-    public function owner(): BelongsTo
+    public function creator(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
