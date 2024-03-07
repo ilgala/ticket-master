@@ -13,6 +13,11 @@ class UserService implements Contracts\UserService
     ) {
     }
 
+    public function find(string $id): ?User
+    {
+        return $this->userRepository->reset()->find($id);
+    }
+
     public function findBy(string $email, bool $fail): ?User
     {
         $user = $this->userRepository->findBy($email);

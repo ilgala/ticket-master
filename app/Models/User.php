@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Authentication\JwtManager;
 use App\Models\Pivot\DepartmentUser;
 use App\Models\Pivot\TicketUser;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Lcobucci\JWT\Token;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
 
@@ -105,5 +107,12 @@ class User extends Authenticatable implements AuditableContract
     {
         return $this->belongsToMany(Department::class)
             ->using(DepartmentUser::class);
+    }
+
+    public function toToken(\DateTimeInterface $expiresAt): Token
+    {
+        $manager = app()->make(JwtManager::class);
+
+        return JwtManager::userToToken($this, $expiresAt);
     }
 }

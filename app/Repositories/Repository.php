@@ -33,7 +33,7 @@ abstract class Repository
     }
 
     /** @codeCoverageIgnore */
-    protected function reset(): self
+    public function reset(): self
     {
         $this->query = $this->model()->newQuery();
 

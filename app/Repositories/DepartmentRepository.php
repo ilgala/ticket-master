@@ -16,5 +16,4 @@ class DepartmentRepository extends Repository implements Contracts\DepartmentRep
     {
         return $this->reset()->whereCode($code)->first();
     }
-
 }

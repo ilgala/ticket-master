@@ -11,7 +11,8 @@ class DepartmentService implements Contracts\DepartmentService
 {
     public function __construct(
         private readonly DepartmentRepository $departmentRepository
-    ) {}
+    ) {
+    }
 
     public function findBy(DepartmentCodes $code, bool $fail): ?Department
     {

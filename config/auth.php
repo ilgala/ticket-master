@@ -40,6 +40,11 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+
+        'api' => [
+            'driver' => 'jwt',
+            'provider' => 'api-users',
+        ],
     ],
 
     /*
@@ -63,6 +68,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
+        ],
+
+        'api-users' => [
+            'driver' => 'jwt',
         ],
 
         // 'users' => [
@@ -111,5 +120,7 @@ return [
     */
 
     'password_timeout' => 10800,
+
+    'jwt_key' => env('JWT_KEY'),
 
 ];

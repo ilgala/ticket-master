@@ -11,11 +11,12 @@ use Tests\TestCase;
 
 class TicketServiceTest extends TestCase
 {
-    public function testItCreatesANewTicketFromData() {
+    public function testItCreatesANewTicketFromData()
+    {
         $user = User::factory()->create();
 
         /** @var TicketRepository|MockInterface $ticketRepository */
-        $ticketRepository =  $this->mock(TicketRepository::class);
+        $ticketRepository = $this->mock(TicketRepository::class);
 
         /** @var UserService|MockInterface $userService */
         $userService = $this->mock(UserService::class, function (MockInterface $mock) use ($user) {
