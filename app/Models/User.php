@@ -3,8 +3,6 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use App\Authentication\JwtManager;
-use App\Models\Pivot\DepartmentUser;
 use App\Models\Pivot\TicketUser;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -12,10 +10,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 use Lcobucci\JWT\Token;
 use OwenIt\Auditing\Auditable;
 use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
 /**
  * App\Models\User
@@ -36,7 +34,6 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Ticket> $tickets
  * @property-read int|null $tickets_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Sanctum\PersonalAccessToken> $tokens
  * @property-read int|null $tokens_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
@@ -57,10 +54,9 @@ use OwenIt\Auditing\Contracts\Auditable as AuditableContract;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements AuditableContract
+class User extends Authenticatable implements AuditableContract, JWTSubject
 {
     use Auditable,
-        HasApiTokens,
         HasFactory,
         HasUuids,
         Notifiable,
@@ -103,16 +99,13 @@ class User extends Authenticatable implements AuditableContract
             ->using(TicketUser::class);
     }
 
-    public function departments(): BelongsToMany
+    public function getJWTIdentifier()
     {
-        return $this->belongsToMany(Department::class)
-            ->using(DepartmentUser::class);
+        return $this->getKey();
     }
 
-    public function toToken(\DateTimeInterface $expiresAt): Token
+    public function getJWTCustomClaims(): array
     {
-        $manager = app()->make(JwtManager::class);
-
-        return JwtManager::userToToken($this, $expiresAt);
+        return [];
     }
 }

@@ -1,6 +1,8 @@
 <?php
 
-use App\Models\User;
+use App\Http\Controllers\Authentication\LoginController;
+use App\Http\Controllers\Authentication\LogoutController;
+use App\Http\Controllers\Authentication\MeController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,36 +16,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', function () {
-    $credentials = request(['email', 'password']);
+Route::middleware('guest')
+    ->post('login', LoginController::class)
+    ->name('login');
 
-    $user = User::where('email', $credentials['email'])->first();
-    if (!$user || !Hash::check($credentials['password'], $user->password)) {
-        return response()->json(['error' => 'Unauthorized'], 401);
-    }
-
-    Auth::guard('api')->setUser($user);
-    /** @var \App\Authentication\JwtManager $manager */
-    $manager = app()->make('jwt-manager');
-
-    return response()->json([
-        'token' => $manager->userToToken(
-            Auth::guard('api')->user()
-        )->toString(),
-        'refreshToken' => $manager->userToToken(
-            Auth::guard('api')->user(),
-            now()->addDays(15)
-        )->toString(),
-    ]);
-});
-
-Route::middleware('auth:api')->get('/user', function (\Illuminate\Http\Request $request) {
-    return $request->user();
-});
-
-Route::middleware('auth:api')
+Route::middleware('auth')
     ->group(function () {
-        // Other routes...
+        Route::match(['get', 'post'], 'logout', LogoutController::class)
+            ->name('logout');
+
+        Route::get('/me', MeController::class)
+            ->name('me');
     });
 
 Route::get('/ticket/created-by/{user:email}', [\App\Http\Controllers\TicketController::class, 'createdBy']);

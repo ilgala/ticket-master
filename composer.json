@@ -8,12 +8,11 @@
         "php": "^8.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
-        "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "lcobucci/clock": "^3.2",
-        "lcobucci/jwt": "^5.2",
         "livewire/livewire": "^3.4",
-        "owen-it/laravel-auditing": "^13.6"
+        "owen-it/laravel-auditing": "^13.6",
+        "tymon/jwt-auth": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.15",
