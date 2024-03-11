@@ -3,6 +3,7 @@
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\LogoutController;
 use App\Http\Controllers\Authentication\MeController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,8 +28,18 @@ Route::middleware('auth')
 
         Route::get('/me', MeController::class)
             ->name('me');
-    });
 
-Route::get('/ticket/created-by/{user:email}', [\App\Http\Controllers\TicketController::class, 'createdBy']);
-Route::get('/ticket/assigned-to/{user:email}', [\App\Http\Controllers\TicketController::class, 'assignedTo']);
-Route::get('/ticket/by-department/{department:code}', [\App\Http\Controllers\TicketController::class, 'byDepartment']);
+        Route::prefix('/ticket')
+            ->name('ticket.')
+            ->group(function () {
+                Route::get('/created-by/{user:email}', [TicketController::class, 'createdBy'])
+                    ->name('created-by');
+                Route::get('/assigned-to/{user:email}', [TicketController::class, 'assignedTo'])
+                    ->name('assigned-to');
+                Route::get('/by-department/{department:code}', [TicketController::class, 'byDepartment'])
+                    ->name('by-department');
+
+                Route::post('/', [TicketController::class, 'store'])
+                    ->name('store');
+            });
+    });

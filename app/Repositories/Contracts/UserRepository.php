@@ -8,6 +8,7 @@ use App\Models\User;
  * @mixin User
  *
  * @method User find(string $identifier)
+ * @method User findOrFail(string $identifier)
  */
 interface UserRepository
 {

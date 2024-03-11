@@ -11,4 +11,6 @@ interface UserService
     public function findBy(string $email, bool $fail): ?User;
 
     public function firstOrCreate(string $email): User;
+
+    public function findOrFail(string $id): User;
 }

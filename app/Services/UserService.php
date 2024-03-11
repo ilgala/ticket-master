@@ -41,4 +41,10 @@ class UserService implements Contracts\UserService
             'password' => '-',
         ]);
     }
+
+    /** @codeCoverageIgnore */
+    public function findOrFail(string $id): User
+    {
+        return $this->userRepository->reset()->findOrFail($id);
+    }
 }

@@ -23,4 +23,10 @@ class DepartmentService implements Contracts\DepartmentService
 
         return $user;
     }
+
+    /** @codeCoverageIgnore */
+    public function findOrFail(string $id): Department
+    {
+        return $this->departmentRepository->reset()->findOrFail($id);
+    }
 }

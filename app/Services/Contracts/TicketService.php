@@ -2,11 +2,15 @@
 
 namespace App\Services\Contracts;
 
+use App\Models\Department;
 use App\Models\Ticket;
+use App\Models\User;
 
 interface TicketService
 {
     public function fetch();
 
     public function creteFrom(array $data): Ticket;
+
+    public function store(array $data, User $creator, Department $department): Ticket;
 }
