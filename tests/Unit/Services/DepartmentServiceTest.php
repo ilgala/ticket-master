@@ -58,7 +58,7 @@ class DepartmentServiceTest extends TestCase
 
     public function testItThrowsModelNotFoundExceptionWhenDepartmentIsNotFound()
     {
-        $code = fake()->code;
+        $code = fake()->randomElement(DepartmentCodes::cases());
         $this->assertDatabaseMissing('departments', [
             'code' => $code,
         ]);
@@ -73,7 +73,7 @@ class DepartmentServiceTest extends TestCase
         $service = new DepartmentService($repository);
 
         $this->expectException(ModelNotFoundException::class);
-        $this->expectExceptionMessage("Can't find department by code $code");
+        $this->expectExceptionMessage("Can't find department by code $code->value");
 
         $service->findBy($code, true);
     }

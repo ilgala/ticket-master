@@ -24,7 +24,7 @@ class EventServiceProvider extends ServiceProvider
         TicketCreated::class => [
             SendTicketCreatedNotificationToCreator::class,
             SendTicketCreatedNotificationToDepartmentUsers::class,
-        ]
+        ],
     ];
 
     /**

@@ -13,6 +13,8 @@ class Store extends FormRequest
             'body' => ['required', 'string', 'min:3', 'max:65535'],
             'creator' => ['required', 'string', 'exists:users,id'],
             'department' => ['required', 'string', 'exists:departments,id'],
+            'attachments' => ['nullable', 'array'],
+            'attachments.*' => ['file', 'max:2048'],
         ];
     }
 }

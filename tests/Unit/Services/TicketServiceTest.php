@@ -20,10 +20,10 @@ class TicketServiceTest extends TestCase
     //public function testItCreatesANewTicketFromData()
     //{
     //    $user = User::factory()->create();
-//
+    //
     //    /** @var TicketRepository|MockInterface $ticketRepository */
     //    $ticketRepository = $this->mock(TicketRepository::class);
-//
+    //
     //    /** @var UserService|MockInterface $userService */
     //    $userService = $this->mock(UserService::class, function (MockInterface $mock) use ($user) {
     //        $mock->expects('firstOrCreate')
@@ -31,7 +31,7 @@ class TicketServiceTest extends TestCase
     //            ->with($user->email)
     //            ->andReturn($user);
     //    });
-//
+    //
     //    $service = new TicketService($ticketRepository, $userService);
     //}
 

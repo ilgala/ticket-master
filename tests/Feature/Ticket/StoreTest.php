@@ -6,6 +6,7 @@ use App\Events\TicketCreated;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
@@ -73,6 +74,26 @@ class StoreTest extends TestCase
         ];
     }
 
+    public static function attachmentsProvider(): array
+    {
+        return [
+            ['attachments', true],
+            ['attachments', false],
+            ['attachments', 123],
+            ['attachments', 123.123],
+            ['attachments', 'foo'],
+        ];
+    }
+
+    public static function attachmentProvider(): array
+    {
+        return [
+            ['attachments.0', ['foo', 'bar']],
+            ['attachments.1', [UploadedFile::fake(), 'bar']],
+            ['attachments.0', [UploadedFile::fake()->create('foo.jpg', 3000), 'bar']],
+        ];
+    }
+
     public function testAuthenticatedUserIsNotAuthorized()
     {
         $response = $this->postJson(route('ticket.store'));
@@ -99,10 +120,14 @@ class StoreTest extends TestCase
      * @dataProvider bodyProvider
      * @dataProvider creatorProvider
      * @dataProvider departmentProvider
+     * @dataProvider attachmentsProvider
      */
+    //@dataProvider attachmentProvider
     public function testRequestIsValid(string $input, mixed $value)
     {
-        $response = $this->actingAs(User::factory()->create())
+        $user = User::factory()->create();
+        $department = Department::factory()->create();
+        $response = $this->actingAs($user = User::factory()->create())
             ->postJson(route('ticket.store'), [
                 $input => $value,
             ]);
@@ -140,7 +165,7 @@ class StoreTest extends TestCase
                     'id', 'code', 'name',
                 ],
                 'createdAt',
-            ]
+            ],
         ]);
 
         Event::assertDispatched(TicketCreated::class);

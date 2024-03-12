@@ -21,7 +21,7 @@ class TicketRepositoryTest extends TestCase
         $repository = new TicketRepository();
 
         Ticket::factory(20)
-            ->for(User::factory(), 'owner')
+            ->for(User::factory(), 'creator')
             ->for(Department::factory(), 'department')
             ->create([
                 'created_at' => fake()->dateTimeBetween('-30 days'),

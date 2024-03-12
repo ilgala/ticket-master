@@ -3,42 +3,22 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Ticket\Store;
-use App\Http\Resources\Ticket\Collection as TicketCollection;
 use App\Http\Resources\Ticket\Model as TicketResource;
+use App\Services\Contracts\AttachmentService;
 use App\Services\Contracts\DepartmentService;
 use App\Services\Contracts\TicketService;
 use App\Services\Contracts\UserService;
 use Arr;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
     public function __construct(
         private readonly TicketService $ticketService,
         private readonly UserService $userService,
-        private readonly DepartmentService $departmentService
+        private readonly DepartmentService $departmentService,
+        private readonly AttachmentService $attachmentService,
     ) {
-    }
-
-    public function createdBy(Request $request): TicketCollection
-    {
-        $tickets = $this->ticketService->fetch();
-
-        return new TicketCollection($tickets);
-    }
-
-    public function assignedTo(Request $request): TicketCollection
-    {
-        $tickets = $this->ticketService->fetch();
-
-        return new TicketCollection($tickets);
-    }
-
-    public function byDepartment(Request $request): TicketCollection
-    {
-        $tickets = $this->ticketService->fetch();
-
-        return new TicketCollection($tickets);
     }
 
     public function store(Store $request): TicketResource
@@ -47,11 +27,19 @@ class TicketController extends Controller
         $user = Arr::pull($data, 'creator');
         $department = Arr::pull($data, 'department');
 
+        // La transaction è superflua dato che se salta il file upload, non è necessario
+        // il rollback di tutti i dati. Il ticket lo teniamo comunque!
+        //DB::transaction(function () use ($user, $department, $data, $request) {
         $ticket = $this->ticketService->store(
             $data,
             $this->userService->findOrFail($user),
-            $this->departmentService->findOrFail($department)
+            $this->departmentService->findOrFail($department),
         );
+
+        $this->attachmentService->storeTicketAttachments(
+            $request->files, $ticket
+        );
+        //});
 
         return new TicketResource($ticket);
     }

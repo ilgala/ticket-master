@@ -32,13 +32,6 @@ Route::middleware('auth')
         Route::prefix('/ticket')
             ->name('ticket.')
             ->group(function () {
-                Route::get('/created-by/{user:email}', [TicketController::class, 'createdBy'])
-                    ->name('created-by');
-                Route::get('/assigned-to/{user:email}', [TicketController::class, 'assignedTo'])
-                    ->name('assigned-to');
-                Route::get('/by-department/{department:code}', [TicketController::class, 'byDepartment'])
-                    ->name('by-department');
-
                 Route::post('/', [TicketController::class, 'store'])
                     ->name('store');
             });
