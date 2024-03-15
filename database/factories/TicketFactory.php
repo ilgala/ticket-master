@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Department;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -24,5 +26,11 @@ class TicketFactory extends Factory
             'slug' => Str::slug($title),
             'body' => fake()->text(500),
         ];
+    }
+
+    public function withMandatoryRelations(?Department $department = null): TicketFactory
+    {
+        return $this->for(User::factory()->create(), 'creator')
+            ->for($department ?: Department::factory()->create(), 'department');
     }
 }

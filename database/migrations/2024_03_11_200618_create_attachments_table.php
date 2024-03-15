@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('attachments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignUlid('ticket_id')
+            $table->uuid('id')->primary();
+            $table->foreignUuid('ticket_id')
                 ->references('id')
                 ->on('tickets')
                 ->cascadeOnDelete();

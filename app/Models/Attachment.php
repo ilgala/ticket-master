@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Storage;
 
@@ -40,10 +39,8 @@ use Illuminate\Support\Facades\Storage;
  *
  * @mixin \Eloquent
  */
-class Attachment extends Model
+class Attachment extends BaseModel
 {
-    use HasFactory;
-
     protected $fillable = [
         'path',
         'name',

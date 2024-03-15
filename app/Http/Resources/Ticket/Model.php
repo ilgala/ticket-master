@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Ticket;
 
+use App\Http\Resources\Attachment\Collection as AttachmentCollection;
 use App\Http\Resources\Department\Model as DepartmentResource;
 use App\Http\Resources\User\Collection as UserCollection;
 use App\Http\Resources\User\Model as UserResource;
@@ -28,6 +29,7 @@ class Model extends JsonResource
             'creator' => $this->whenLoaded('creator', fn () => new UserResource($this->creator)),
             'department' => $this->whenLoaded('department', fn () => new DepartmentResource($this->department)),
             'assignees' => $this->whenLoaded('assignees', fn () => new UserCollection($this->assignees)),
+            'attachments' => $this->whenLoaded('attachments', fn () => new AttachmentCollection($this->attachments)),
             'createdAt' => $this->created_at->toISOString(),
         ];
     }

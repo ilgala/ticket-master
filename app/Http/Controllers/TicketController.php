@@ -21,6 +21,9 @@ class TicketController extends Controller
     ) {
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(Store $request): TicketResource
     {
         $data = $request->validated();
@@ -36,9 +39,13 @@ class TicketController extends Controller
             $this->departmentService->findOrFail($department),
         );
 
-        $this->attachmentService->storeTicketAttachments(
-            $request->files, $ticket
-        );
+        if ($request->files->has('attachments')) {
+            $this->attachmentService->storeTicketAttachments(
+                $request->files, $ticket
+            );
+
+            $ticket->loadMissing(['attachments']);
+        }
         //});
 
         return new TicketResource($ticket);

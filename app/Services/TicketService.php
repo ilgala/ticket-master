@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Repositories\Contracts\TicketRepository;
 use App\Services\Contracts\DepartmentService;
 use App\Services\Contracts\UserService;
+use Illuminate\Support\Facades\DB;
 
 class TicketService implements Contracts\TicketService
 {
@@ -43,16 +44,21 @@ class TicketService implements Contracts\TicketService
         return new Ticket();
     }
 
+    /**
+     * @throws \Throwable
+     */
     public function store(array $data, User $creator, Department $department): Ticket
     {
-        $ticket = new Ticket($data);
-        $ticket->creator()->associate($creator);
-        $ticket->department()->associate($department);
+        return DB::transaction(function () use ($data, $creator, $department) {
+            $ticket = new Ticket($data);
+            $ticket->creator()->associate($creator);
+            $ticket->department()->associate($department);
 
-        return tap($ticket, function (Ticket $ticket) {
-            $ticket->save();
+            return tap($ticket, function (Ticket $ticket) {
+                $ticket->save();
 
-            event(new TicketCreated($ticket));
+                event(new TicketCreated($ticket));
+            });
         });
     }
 }

@@ -34,5 +34,8 @@ Route::middleware('auth')
             ->group(function () {
                 Route::post('/', [TicketController::class, 'store'])
                     ->name('store');
+
+                Route::get('/{ticket}', [TicketController::class, 'show'])
+                    ->name('show');
             });
     });

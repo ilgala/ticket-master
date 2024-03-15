@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -125,8 +126,6 @@ class StoreTest extends TestCase
     //@dataProvider attachmentProvider
     public function testRequestIsValid(string $input, mixed $value)
     {
-        $user = User::factory()->create();
-        $department = Department::factory()->create();
         $response = $this->actingAs($user = User::factory()->create())
             ->postJson(route('ticket.store'), [
                 $input => $value,
@@ -163,6 +162,50 @@ class StoreTest extends TestCase
                 ],
                 'department' => [
                     'id', 'code', 'name',
+                ],
+                'createdAt',
+            ],
+        ]);
+
+        Event::assertDispatched(TicketCreated::class);
+    }
+
+    public function testRequestSucceedsWithAttachments()
+    {
+        Storage::fake('attachments');
+        Event::fake([
+            TicketCreated::class,
+        ]);
+
+        $user = User::factory()->create();
+        $department = Department::factory()->create();
+        $response = $this->actingAs(User::factory()->create())
+            ->postJson(route('ticket.store'), [
+                'title' => fake()->sentence(),
+                'body' => fake()->text,
+                'creator' => $user->getKey(),
+                'department' => $department->getKey(),
+                'attachments' => [
+                    UploadedFile::fake()->create('attachment-1.png'),
+                    UploadedFile::fake()->create('attachment-2.png'),
+                    UploadedFile::fake()->create('attachment-3.png'),
+                ],
+            ]);
+
+        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertJsonStructure([
+            'data' => [
+                'id',
+                'title',
+                'body',
+                'creator' => [
+                    'id', 'email',
+                ],
+                'department' => [
+                    'id', 'code', 'name',
+                ],
+                'attachments' => [
+                    ['path', 'name', 'mime', 'size', 'fullPath'],
                 ],
                 'createdAt',
             ],

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\HasUniqueSlug;
 use App\Models\Pivot\TicketUser;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -49,11 +50,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class Ticket extends BaseModel
 {
+    use HasUniqueSlug;
+
     protected $fillable = [
         'title',
         'slug',
         'body',
     ];
+
+    protected static function boot(): void
+    {
+        parent::boot();
+    }
 
     public function creator(): BelongsTo
     {

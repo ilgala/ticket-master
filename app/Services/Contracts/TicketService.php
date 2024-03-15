@@ -12,5 +12,8 @@ interface TicketService
 
     public function creteFrom(array $data): Ticket;
 
+    /**
+     * @throws \Throwable
+     */
     public function store(array $data, User $creator, Department $department): Ticket;
 }
