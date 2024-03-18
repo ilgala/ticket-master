@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        OwenIt\Auditing\AuditingServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -168,6 +169,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\RepositoriesProvider::class,
+        App\Providers\ServicesProvider::class,
     ])->toArray(),
 
     /*

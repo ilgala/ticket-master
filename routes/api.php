@@ -1,6 +1,10 @@
 <?php
 
-use Illuminate\Http\Request;
+use App\Http\Controllers\AssigneeController;
+use App\Http\Controllers\Authentication\LoginController;
+use App\Http\Controllers\Authentication\LogoutController;
+use App\Http\Controllers\Authentication\MeController;
+use App\Http\Controllers\TicketController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,6 +18,32 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::middleware('guest')
+    ->post('login', LoginController::class)
+    ->name('login');
+
+Route::middleware('auth')
+    ->group(function () {
+        Route::match(['get', 'post'], 'logout', LogoutController::class)
+            ->name('logout');
+
+        Route::get('/me', MeController::class)
+            ->name('me');
+
+        Route::prefix('/assignee')
+            ->name('assignee.')
+            ->group(function () {
+                Route::get('/{assignee:email}/tickets', [AssigneeController::class, 'tickets'])
+                    ->name('tickets');
+            });
+
+        Route::prefix('/ticket')
+            ->name('ticket.')
+            ->group(function () {
+                Route::post('/', [TicketController::class, 'store'])
+                    ->name('store');
+
+                Route::get('/{ticket}', [TicketController::class, 'show'])
+                    ->name('show');
+            });
+    });

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Symfony\Component\HttpFoundation\Response as SymfonyResponse;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('{path}', function () {
+    return response()->json(['message' => 'Unauthorized'], SymfonyResponse::HTTP_UNAUTHORIZED);
+})->where('path', '(.*)');
+
+// Route::get('/', \App\Livewire\TicketForm::class);
