@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Attachment;
 use App\Models\Department;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -32,5 +33,23 @@ class TicketFactory extends Factory
     {
         return $this->for(User::factory()->create(), 'creator')
             ->for($department ?: Department::factory()->create(), 'department');
+    }
+
+    public function withAssignees(): TicketFactory
+    {
+        return $this->hasAttached(
+            User::factory(),
+            ['is_owner' => true],
+            'assignees'
+        )->hasAttached(
+            User::factory()->count(fake()->numberBetween(1, 5)),
+            ['is_owner' => false],
+            'assignees'
+        );
+    }
+
+    public function withAttachments(): TicketFactory
+    {
+        return $this->has(Attachment::factory());
     }
 }

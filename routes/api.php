@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AssigneeController;
 use App\Http\Controllers\Authentication\LoginController;
 use App\Http\Controllers\Authentication\LogoutController;
 use App\Http\Controllers\Authentication\MeController;
@@ -28,6 +29,13 @@ Route::middleware('auth')
 
         Route::get('/me', MeController::class)
             ->name('me');
+
+        Route::prefix('/assignee')
+            ->name('assignee.')
+            ->group(function () {
+                Route::get('/{assignee:email}/tickets', [AssigneeController::class, 'tickets'])
+                    ->name('tickets');
+            });
 
         Route::prefix('/ticket')
             ->name('ticket.')

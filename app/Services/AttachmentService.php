@@ -15,7 +15,8 @@ class AttachmentService implements Contracts\AttachmentService
 {
     public function __construct(
         private readonly FilesystemFactory $factory
-    ) {}
+    ) {
+    }
 
     /**
      * @throws Throwable

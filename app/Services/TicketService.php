@@ -2,15 +2,16 @@
 
 namespace App\Services;
 
-use App\Enums\DepartmentCodes;
+use App\Dto\Pagination;
 use App\Events\TicketCreated;
 use App\Models\Department;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Repositories\Contracts\TicketRepository;
-use App\Services\Contracts\DepartmentService;
-use App\Services\Contracts\UserService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
+use Throwable;
 
 class TicketService implements Contracts\TicketService
 {
@@ -24,6 +25,23 @@ class TicketService implements Contracts\TicketService
     public function fetch()
     {
         return $this->ticketRepository->list();
+    }
+
+    public function paginateFor(User $assignee, Pagination $pagination): LengthAwarePaginator
+    {
+        return $this->ticketRepository->reset()
+            ->with(['creator', 'department', 'assignees', 'attachments'])
+            ->whereHas('assignees', function (Builder $query) use ($assignee) {
+                $query->where('id', $assignee->id);
+            })->orderBy(
+                $pagination->order,
+                $pagination->direction)
+            ->paginate(
+                $pagination->perPage,
+                ['*'],
+                $pagination->pageName,
+                $pagination->page
+            );
     }
 
     public function creteFrom(array $data): Ticket
@@ -45,7 +63,7 @@ class TicketService implements Contracts\TicketService
     }
 
     /**
-     * @throws \Throwable
+     * @throws Throwable
      */
     public function store(array $data, User $creator, Department $department): Ticket
     {
