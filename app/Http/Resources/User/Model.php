@@ -9,6 +9,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
  * @mixin User
+ *
  * @property TicketUser $pivot
  */
 class Model extends JsonResource
