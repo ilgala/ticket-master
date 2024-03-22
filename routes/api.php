@@ -35,6 +35,9 @@ Route::middleware('auth')
             ->group(function () {
                 Route::get('/{assignee:email}/tickets', [AssigneeController::class, 'tickets'])
                     ->name('tickets');
+
+                Route::put('/{assignee:email}/tickets', [AssigneeController::class, 'assignTicket'])
+                    ->name('assign-ticket');
             });
 
         Route::prefix('/ticket')

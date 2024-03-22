@@ -95,6 +95,7 @@ class User extends Authenticatable implements AuditableContract, JWTSubject
     public function tickets(): BelongsToMany
     {
         return $this->belongsToMany(Ticket::class)
+            ->withPivot('is_owner')
             ->using(TicketUser::class);
     }
 
