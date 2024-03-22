@@ -27,6 +27,11 @@ class TicketService implements Contracts\TicketService
         return $this->ticketRepository->list();
     }
 
+    public function find(string $id): Ticket
+    {
+        return $this->ticketRepository->reset()->findOrFail($id);
+    }
+
     public function paginateFor(User $assignee, Pagination $pagination): LengthAwarePaginator
     {
         return $this->ticketRepository->reset()
@@ -78,5 +83,14 @@ class TicketService implements Contracts\TicketService
                 event(new TicketCreated($ticket));
             });
         });
+    }
+
+    public function assign(User $assignee, Ticket $ticket, bool $isOwner = false): Ticket
+    {
+        return tap($ticket, function (Ticket $ticket) use ($assignee, $isOwner) {
+            $ticket->assignees()->attach($assignee->getKey(), [
+                'is_owner' => $isOwner,
+            ]);
+        })->loadMissing('assignees');
     }
 }

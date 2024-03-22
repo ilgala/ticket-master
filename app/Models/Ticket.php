@@ -71,6 +71,7 @@ class Ticket extends BaseModel
     public function assignees(): BelongsToMany
     {
         return $this->belongsToMany(User::class)
+            ->withPivot('is_owner')
             ->using(TicketUser::class);
     }
 
